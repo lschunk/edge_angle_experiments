@@ -1,0 +1,11 @@
+section,angel_number,dist to origin on curve [mm],segment on section [mm],angle 1 (3-points) [degree],angle 2 (2-constructed-lines) [degree],angle 3 (2-BestFit-lines) [degree]
+FLT8-7-before_E1_RE_SEC-03_local,1,1.0,2.0,180.0,155.3,154.8
+FLT8-7-before_E1_RE_SEC-03_local,2,2.0,2.0,154.8,106.8,102.8
+FLT8-7-before_E1_RE_SEC-03_local,3,3.0,2.0,131.4,87.1,87.1
+FLT8-7-before_E1_RE_SEC-03_local,4,4.0,2.0,118.3,87.6,87.6
+FLT8-7-before_E1_RE_SEC-03_local,5,5.0,2.0,111.2,88.1,87.8
+FLT8-7-before_E1_RE_SEC-03_local,6,6.0,2.0,106.6,87.5,87.6
+FLT8-7-before_E1_RE_SEC-03_local,7,7.0,2.0,103.3,87.5,87.3
+FLT8-7-before_E1_RE_SEC-03_local,8,8.0,2.0,101.1,87.4,87.6
+FLT8-7-before_E1_RE_SEC-03_local,9,9.0,2.0,99.3,75.3,78.5
+FLT8-7-before_E1_RE_SEC-03_local,10,10.0,2.0,95.7,33.6,156.2

@@ -1,0 +1,11 @@
+section,angel_number,dist to origin on curve [mm],segment on section [mm],angle 1 (3-points) [degree],angle 2 (2-constructed-lines) [degree],angle 3 (2-BestFit-lines) [degree]
+LYDIT1-4-before_E1_RE_SEC-02_local,1,1.0,2.0,54.6,45.7,59.9
+LYDIT1-4-before_E1_RE_SEC-02_local,2,2.0,2.0,45.1,36.7,37.3
+LYDIT1-4-before_E1_RE_SEC-02_local,3,3.0,2.0,42.3,37.7,38.2
+LYDIT1-4-before_E1_RE_SEC-02_local,4,4.0,2.0,41.3,37.2,36.9
+LYDIT1-4-before_E1_RE_SEC-02_local,5,5.0,2.0,40.2,35.0,35.2
+LYDIT1-4-before_E1_RE_SEC-02_local,6,6.0,2.0,39.2,35.2,34.3
+LYDIT1-4-before_E1_RE_SEC-02_local,7,7.0,2.0,38.8,35.9,36.5
+LYDIT1-4-before_E1_RE_SEC-02_local,8,8.0,2.0,38.3,35.6,35.2
+LYDIT1-4-before_E1_RE_SEC-02_local,9,9.0,2.0,38.0,36.2,36.3
+LYDIT1-4-before_E1_RE_SEC-02_local,10,10.0,2.0,37.9,37.1,37.2

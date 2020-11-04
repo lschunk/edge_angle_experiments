@@ -1,0 +1,12 @@
+section,angel_number,dist to origin on curve [mm],segment on section [mm],angle 1 (3-points) [degree],angle 2 (2-constructed-lines) [degree],angle 3 (2-BestFit-lines) [degree]
+FLT4-15-1000strokes_E1_RE_SEC-10_local,1,1.0,2.0,86.4,79.3,80.9
+FLT4-15-1000strokes_E1_RE_SEC-10_local,2,2.0,2.0,78.2,68.0,67.9
+FLT4-15-1000strokes_E1_RE_SEC-10_local,3,3.0,2.0,73.6,68.7,68.5
+FLT4-15-1000strokes_E1_RE_SEC-10_local,4,4.0,2.0,73.2,69.3,69.3
+FLT4-15-1000strokes_E1_RE_SEC-10_local,5,5.0,2.0,71.8,67.3,66.2
+FLT4-15-1000strokes_E1_RE_SEC-10_local,6,6.0,2.0,71.2,69.2,70.4
+FLT4-15-1000strokes_E1_RE_SEC-10_local,7,7.0,2.0,71.1,64.4,64.1
+FLT4-15-1000strokes_E1_RE_SEC-10_local,8,8.0,2.0,69.5,58.5,58.9
+FLT4-15-1000strokes_E1_RE_SEC-10_local,9,9.0,2.0,68.3,58.7,58.4
+FLT4-15-1000strokes_E1_RE_SEC-10_local,10,10.0,2.0,67.3,56.4,58.7
+FLT4-15-1000strokes_E1_RE_SEC-10_local,11,11.0,2.0,66.1,25.4,26.2
