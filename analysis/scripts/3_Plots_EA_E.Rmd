@@ -247,38 +247,42 @@ p_lydite3 <- ggplot(data = IE_mean[grep("LYDIT", IE_mean[["ID_cycle"]]), ], aes(
             theme_classic()+
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
-            ylim(35, 70) + 
+            ylim(35, 110) + 
             scale_colour_manual(values = c("#354823", "#CB2314")) +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
-#print(p_lydite3)
+print(p_lydite3)
 
 # plots the flint samples 
 p_flint3 <- ggplot(data = IE_mean[grep("FLT", IE_mean[["ID_cycle"]]), ], aes(x = strokes, y = Three_point.mean, colour = Edge.angle)) + 
             geom_point(size = 2) +
             geom_line(aes(group = ID)) +
-            facet_wrap(ID ~ Contact.material+Task, nrow = 3)+
+            facet_wrap(ID ~ Contact.material+Task, nrow = 1, ncol = 2)+
             theme_classic()+
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
-            ylim(35, 70) + 
+            ylim(35, 110) + 
             scale_colour_manual(values = c("#354823", "#CB2314")) +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
-
+print(p_flint3)
 
 # combines the flint and the lydite plots 
-p3 <- p_flint3 + p_lydite3 + plot_layout(guides = 'collect')
+p3 <- p_flint3 + p_lydite3 + plot_layout(widths = c(1, 1), guides = 'collect')
        
 print(p3)
 
-# temporary solution
 #save to PDF
+# temporary solution
 	file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE1_EA_plot", ".pdf")
 	ggsave(filename = file_out, plot = p_lydite3, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
 
   file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE2_EA_plot", ".pdf")
 	ggsave(filename = file_out, plot = p_flint3, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
 	
-	
+# solution for one plot 
+	file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE_EA_plot", ".pdf")
+	ggsave(filename = file_out, plot = p3, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
+
+		
 ```
 
 
