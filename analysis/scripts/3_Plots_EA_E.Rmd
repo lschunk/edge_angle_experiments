@@ -131,7 +131,7 @@ p_lydite <- ggplot(data = aVSn_mean[grep("LYDIT", aVSn_mean[["ID_cycle"]]), ], a
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
             coord_cartesian(ylim = range_var) + 
-            scale_colour_manual(values = "#52854c") +
+            scale_colour_manual(values = "#CB2314") +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
 
 
@@ -144,7 +144,7 @@ p_flint <- ggplot(data = aVSn_mean[grep("FLT", aVSn_mean[["ID_cycle"]]), ], aes(
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
             coord_cartesian(ylim = range_var) +
-            scale_colour_manual(values = "#52854c") +
+            scale_colour_manual(values = "#CB2314") +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
 print(p_flint)
 	
@@ -190,10 +190,9 @@ p_lydite2 <- ggplot(data = TFE_final[grep("LYDIT", TFE_final[["ID_cycle"]]), ], 
              xlab("strokes") + ylab(NULL) +
              labs(colour = "Edge angle") +
              ylim(30, 80) + 
-             scale_colour_manual(values = c("#487bb6", "#9a0f0f")) +
+             scale_colour_manual(values = c("#046C9A", "#FAD510")) +
              scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
 
-print(p_lydite2)
 
 # plots the flint samples 
 p_flint2 <- ggplot(data = TFE_final[grep("FLT", TFE_final[["ID_cycle"]]), ], aes(x = strokes, y = Three_point.mean, colour = Edge.angle)) + 
@@ -205,10 +204,9 @@ p_flint2 <- ggplot(data = TFE_final[grep("FLT", TFE_final[["ID_cycle"]]), ], aes
             labs(colour = "Edge angle") +
             ylim(30, 80) + 
             #coord_cartesian(ylim = range_var) +
-            scale_colour_manual(values = c("#487bb6", "#9a0f0f")) +
+            scale_colour_manual(values = c("#046C9A", "#FAD510")) +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
 
-print(p_flint2)
 	
 # combines the flint and the lydite plots 
 p2 <- p_flint2 + p_lydite2 + plot_layout(guides = 'collect')  
@@ -250,7 +248,7 @@ p_lydite3 <- ggplot(data = IE_mean[grep("LYDIT", IE_mean[["ID_cycle"]]), ], aes(
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
             ylim(35, 70) + 
-            scale_colour_manual(values = c("#52854c", "#ffdb6d")) +
+            scale_colour_manual(values = c("#354823", "#CB2314")) +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
 #print(p_lydite3)
 
@@ -263,7 +261,7 @@ p_flint3 <- ggplot(data = IE_mean[grep("FLT", IE_mean[["ID_cycle"]]), ], aes(x =
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
             ylim(35, 70) + 
-            scale_colour_manual(values = c("#52854c", "#ffdb6d")) +
+            scale_colour_manual(values = c("#354823", "#CB2314")) +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
 
 
