@@ -88,7 +88,6 @@ The imported file is: "`r paste0("~/", data_file)`"
 # Prepare variables
 ## Define numeric variables
 ```{r}
-#num.var <- 12
 num.var <- 14:length(imp_data)
 ```
 
@@ -117,6 +116,7 @@ aVSn_mean <- summaryBy(. ~ ID_cycle+ID+strokes+Contact.material+Raw.material+Edg
 
 # gets new order 
 aVSn_mean$strokes <- factor(aVSn_mean$strokes, levels=c("before", "50strokes", "250strokes", "1000strokes", "2000strokes"))
+aVSn_mean$ID <- factor(aVSn_mean$ID, levels=c("FLT4-5", "FLT4-7", "FLT4-10", "FLT4-6", "FLT4-14", "FLT4-15","FLT4-11", "FLT4-12", "FLT4-13", "FLT4-4", "FLT4-8", "FLT4-9", "LYDIT4-2", "LYDIT4-3", "LYDIT4-8","LYDIT4-5", "LYDIT4-7", "LYDIT4-12", "LYDIT4-9", "LYDIT4-10", "LYDIT4-11", "LYDIT4-1", "LYDIT4-4", "LYDIT4-6")) 
 
 # gets the min/max range of the data set 
 range_var <- range(aVSn_mean[["Three_point.mean"]]) 
@@ -126,7 +126,7 @@ range_var <- range(aVSn_mean[["Three_point.mean"]])
 p_lydite <- ggplot(data = aVSn_mean[grep("LYDIT", aVSn_mean[["ID_cycle"]]), ], aes(x = strokes, y = Three_point.mean, colour = Edge.angle)) + 
             geom_point(size = 2) +
             geom_line(aes(group = ID)) +
-            facet_wrap(ID ~ Contact.material, nrow = 2)+
+            facet_wrap(ID ~ Contact.material, nrow = 4)+
             theme_classic()+
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
@@ -139,7 +139,7 @@ p_lydite <- ggplot(data = aVSn_mean[grep("LYDIT", aVSn_mean[["ID_cycle"]]), ], a
 p_flint <- ggplot(data = aVSn_mean[grep("FLT", aVSn_mean[["ID_cycle"]]), ], aes(x = strokes, y = Three_point.mean, colour = Edge.angle)) + 
             geom_point(size = 2) +
             geom_line(aes(group = ID)) +
-            facet_wrap(ID ~ Contact.material, nrow = 2)+
+            facet_wrap(ID ~ Contact.material, nrow = 4)+
             theme_classic()+
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
@@ -155,7 +155,7 @@ print(p)
 
 #save to PDF
 	file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_aVSn_EA_plot", ".pdf")
-	ggsave(filename = file_out, plot = p, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
+	ggsave(filename = file_out, plot = p, path = dir_out, device = "pdf", width = 370, height = 280, units = "mm")
 
 
 ```
@@ -179,6 +179,7 @@ TFE_final <- TFE_mean[c(0:49, 51:80, 83:122),]
 
 # gets new order 
 TFE_final$strokes <- factor(TFE_final$strokes, levels=c("before", "50strokes", "250strokes", "1000strokes", "2000strokes"))
+
 
 # plots 
 # plots first the lydite samples
