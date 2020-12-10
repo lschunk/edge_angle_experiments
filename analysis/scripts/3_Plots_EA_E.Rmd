@@ -106,7 +106,8 @@ for (i in num.var) cat("[",i,"] ", names(imp_data)[i], "\n", sep="")
 ```{r}
 # selects only the data from the aVSn experiment   
 aVSn <- filter(imp_data, experiment == "'aVSn'-experiment")
-aVSn <- filter(aVSn, Angle_number == "3" | Angle_number == "4" | Angle_number == "5" | Angle_number == "6" | Angle_number == "7" | Angle_number == "8")
+aVSn <- filter(aVSn, Angle_number == "3" | Angle_number == "4" | Angle_number == "5" | Angle_number == "6")
+aVSn <- filter(aVSn, sec == "SEC-02" | sec == "SEC-03" | sec == "SEC-04" | sec == "SEC-05" | sec == "SEC-06" | sec == "SEC-07" | sec == "SEC-08")
 
 # adds a column that combines sample and location
 aVSn_data <- unite(aVSn, ID_cycle, c(ID, strokes), remove = FALSE)
@@ -154,8 +155,8 @@ p <- p_flint + p_lydite + plot_layout(guides = 'collect')
 print(p)
 
 #save to PDF
-	file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_aVSn_EA_plot", ".pdf")
-	ggsave(filename = file_out, plot = p, path = dir_out, device = "pdf", width = 370, height = 280, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_aVSn_EA_plot", ".pdf")
+ggsave(filename = file_out, plot = p, path = dir_out, device = "pdf", width = 370, height = 280, units = "mm")
 
 
 ```
@@ -166,7 +167,8 @@ print(p)
 # selects only the data from the TFE experiment and the 'Three-point' method  
 #TFE <- imp_data[7460:20629,1:14]
 TFE <- filter(imp_data, experiment == "tool_function-experiment_cutting" | experiment == "tool_function-experiment_carving")
-TFE <- filter(TFE, Angle_number == "3" | Angle_number == "4" | Angle_number == "5" | Angle_number == "6" | Angle_number == "7" | Angle_number == "8")
+TFE <- filter(TFE, Angle_number == "3" | Angle_number == "4" | Angle_number == "5" | Angle_number == "6")
+TFE <- filter(TFE, sec == "SEC-02" | sec == "SEC-03" | sec == "SEC-04" | sec == "SEC-05" | sec == "SEC-06" | sec == "SEC-07" | sec == "SEC-8")
 
 # adds a column that combines sample and location
 TFE_data <- unite(TFE, ID_cycle, c(ID, strokes), remove = FALSE)
@@ -190,7 +192,7 @@ p_lydite2 <- ggplot(data = TFE_final[grep("LYDIT", TFE_final[["ID_cycle"]]), ], 
              theme_classic()+
              xlab("strokes") + ylab(NULL) +
              labs(colour = "Edge angle") +
-             ylim(30, 80) + 
+             ylim(30, 110) + 
              scale_colour_manual(values = c("#046C9A", "#FAD510")) +
              scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
 
@@ -203,7 +205,7 @@ p_flint2 <- ggplot(data = TFE_final[grep("FLT", TFE_final[["ID_cycle"]]), ], aes
             theme_classic()+
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
-            ylim(30, 80) + 
+            ylim(30, 110) + 
             #coord_cartesian(ylim = range_var) +
             scale_colour_manual(values = c("#046C9A", "#FAD510")) +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
@@ -227,7 +229,9 @@ print(p2)
 # selects only the data from the initial experiment  
 IE <- filter(imp_data, experiment == "initial_experiment")
 # filters the first two and the two last sections out 
-IE <- filter(IE, Angle_number == "3" | Angle_number == "4" | Angle_number == "5" | Angle_number == "6" | Angle_number == "7" | Angle_number == "8")
+IE <- filter(IE, Angle_number == "3" | Angle_number == "4" | Angle_number == "5" | Angle_number == "6")
+IE <- filter(IE, sec == "SEC-02" | sec == "SEC-03" | sec == "SEC-04" | sec == "SEC-05" | sec == "SEC-06" | sec == "SEC-07" | sec == "SEC-8")
+
 
 # adds a column that combines sample and location
 IE_data <- unite(IE, ID_cycle, c(ID, strokes), remove = FALSE)
@@ -240,48 +244,24 @@ IE_mean$strokes <- factor(IE_mean$strokes, levels=c("before", "50strokes", "250s
 
 
 # plots 
-# plots first the lydit samples
-p_lydite3 <- ggplot(data = IE_mean[grep("LYDIT", IE_mean[["ID_cycle"]]), ], aes(x = strokes, y = Three_point.mean, colour = Edge.angle)) + 
+# plots the lydite and flint samples
+p3 <- ggplot(data = IE_mean, aes(x = strokes, y = Three_point.mean, colour = Edge.angle)) + 
             geom_point(size = 2) +
             geom_line(aes(group = ID)) +
-            facet_wrap(ID ~ Contact.material+Task, nrow = 3)+
+            facet_wrap(ID ~ Contact.material+Task, ncol = 4)+
             theme_classic()+
             xlab("strokes") + ylab(NULL) +
             labs(colour = "Edge angle") +
-            ylim(35, 110) + 
+            ylim(35, 130) + 
             scale_colour_manual(values = c("#354823", "#CB2314")) +
             scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
-print(p_lydite3)
 
-# plots the flint samples 
-p_flint3 <- ggplot(data = IE_mean[grep("FLT", IE_mean[["ID_cycle"]]), ], aes(x = strokes, y = Three_point.mean, colour = Edge.angle)) + 
-            geom_point(size = 2) +
-            geom_line(aes(group = ID)) +
-            facet_wrap(ID ~ Contact.material+Task, nrow = 1, ncol = 2)+
-            theme_classic()+
-            xlab("strokes") + ylab(NULL) +
-            labs(colour = "Edge angle") +
-            ylim(35, 110) + 
-            scale_colour_manual(values = c("#354823", "#CB2314")) +
-            scale_x_discrete(breaks = c("before", "50strokes", "250strokes" , "1000strokes", "2000strokes"), labels = c("0", "50", "250", "1000", "2000"))
-print(p_flint3)
 
-# combines the flint and the lydite plots 
-p3 <- p_flint3 + p_lydite3 + plot_layout(widths = c(1, 1), guides = 'collect')
-       
 print(p3)
 
 #save to PDF
-# temporary solution
-	file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE1_EA_plot", ".pdf")
-	ggsave(filename = file_out, plot = p_lydite3, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
-
-  file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE2_EA_plot", ".pdf")
-	ggsave(filename = file_out, plot = p_flint3, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
-	
-# solution for one plot 
-	file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE_EA_plot", ".pdf")
-	ggsave(filename = file_out, plot = p3, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE_EA_plot", ".pdf")
+ggsave(filename = file_out, plot = p3, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
 
 		
 ```
