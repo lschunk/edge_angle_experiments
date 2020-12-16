@@ -1,0 +1,210 @@
+title: "Plot - Edge angle analysis + volume - experimental data"
+author: "Lisa Schunk"
+date: "`r Sys.time()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    theme: cerulean
+    highlight: pygments
+    number_sections: true
+  github_document: 
+    toc: true
+    toc_depth: 3
+    html_preview: false
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", knit_root_dir = rprojroot::find_rstudio_root_file()) })
+
+---
+
+```{r Knitr Options, include = FALSE}
+knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
+```
+
+# Goal of the script
+This script plots all edge angle values. The three experiments will be treated separated.  
+
+
+
+```{r}
+dir_in <- "analysis/derived_data2/"
+dir_out <- "analysis/plots"
+```
+
+Raw data must be located in `r paste0("~/", dir_in)`.  
+Formatted data will be saved in `r paste0("~/", dir_out)`.
+
+The knit directory for this script is the project directory.
+---
+
+
+# Load packages
+```{r}
+library(openxlsx)
+library(readxl)
+library(R.utils)
+library(ggplot2)
+library(tools)
+library(tidyverse)
+library(patchwork)
+library(ggsci)
+library(ggfortify)
+library(wesanderson)
+library(doBy)
+
+```
+
+
+---
+
+# Get name, path and information of the file 
+```{r}
+data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
+md5_in <- md5sum(data_file)
+info_in <- data.frame(file = basename(names(md5_in)), checksum = md5_in, row.names = NULL)
+```
+
+
+The checksum (MD5 hashes) of the imported file is:  
+```{r, echo = FALSE}
+info_in
+```
+
+
+# Load data into R object
+```{r}
+imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, colNames = TRUE,
+                      rowNames = FALSE, skipEmptyRows = FALSE) 
+str(imp_data)
+```
+
+The imported file is: "`r paste0("~/", data_file)`"  
+
+---
+
+
+# Prepare variables
+## Define numeric variables
+```{r}
+num.var <- 9:length(imp_data)
+```
+
+The following variables will be used: 
+
+```{r, echo=FALSE}
+for (i in num.var) cat("[",i,"] ", names(imp_data)[i], "\n", sep="")
+```
+
+
+---
+
+
+# Facet wrap to plot each experiment individually 
+## Tool function experiment 
+```{r}
+# gets new order 
+imp_data$strokes <- factor(imp_data$strokes, levels=c("before", "50strokes", "250strokes", "1000strokes", "2000strokes"))
+
+# plots 
+# plots first the lydit sample
+
+p_lydite <- ggplot(data = imp_data[grep("LYDIT", imp_data[["ID_cycle"]]), ], aes(x = Three_point.mean, y = Volume, colour = strokes)) +  
+      geom_point(size = 2) +
+      geom_line(aes(group = ID)) +
+      facet_wrap(ID ~ Edge.angle+Task, nrow = 2)+
+      theme_classic() +
+      labs(colour = "strokes") +
+      scale_colour_futurama() +
+      geom_jitter(size = 4, position = position_jitter(width = 0.35, seed = 1)) +
+      xlab("edge angle") + ylab("Volume in mm3") 
+      
+print(p_lydite)
+
+
+# plots the flint samples 
+p_flint <- ggplot(data = imp_data[grep("FLT", imp_data[["ID_cycle"]]), ], aes(x = Three_point.mean, y = Volume, colour = strokes)) +  
+      geom_point(size = 2) +
+      geom_line(aes(group = ID)) +
+      facet_wrap(ID ~ Edge.angle+Task, nrow = 2)+
+      theme_classic() +
+      labs(colour = "strokes") +
+      scale_colour_futurama() +
+      geom_jitter(size = 4, position = position_jitter(width = 0.35, seed = 1)) +
+      xlab("edge angle") + ylab("Volume in mm3") 
+      
+
+print(p_flint)
+	
+# combines the flint and the lydite plots 
+p <- p_flint + p_lydite + plot_layout(guides = 'collect')  
+       
+print(p)
+
+#save to PDF
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_TFE_EA+V", ".pdf")
+ggsave(filename = file_out, plot = p, path = dir_out, device = "pdf", width = 370, height = 280, units = "mm")
+
+
+```
+
+
+```{r}
+for (i in seq_along(imp_data["ID_cycle"])){
+
+  p3 <- ggplot(data = imp_data[[i]], aes(x = Three_point.mean, y = Volume, colour = strokes)) +  
+      geom_point(size = 2) +
+      geom_line(aes(group = ID)) +
+      #facet_wrap(ID ~ Edge.angle+Task, nrow = 2)+
+      theme_classic() +
+      labs(colour = "strokes") +
+      scale_colour_futurama() +
+      geom_jitter(size = 4, position = position_jitter(width = 0.35, seed = 1)) +
+      xlab("edge angle") + ylab("Volume in mm3") 
+      
+
+print(p3)
+
+}
+
+imp_data["ID"]
+
+```
+
+
+
+
+---
+
+
+## Show files information
+```{r}
+files_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
+md5_out <- md5sum(files_out)
+info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, 
+                       row.names = NULL)
+```
+
+
+---
+
+The checksum (MD5 hashes) of the exported files are:  
+```{r, echo = FALSE}
+info_out
+```
+
+
+---
+
+# sessionInfo() and RStudio version
+
+```{r}
+sessionInfo()
+```
+
+RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
+
+
+---
+
+END OF SCRIPT
