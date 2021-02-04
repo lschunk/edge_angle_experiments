@@ -2,32 +2,19 @@
 title: "Import - Edge angle analysis - experimental data"
 author: "Lisa Schunk"
 date: "`r Sys.time()`"
-output:
-  html_document:
-    toc: true
-    toc_depth: 3
-    toc_float: true
-    theme: cerulean
-    highlight: pygments
-    number_sections: true
-  github_document: 
-    toc: true
-    toc_depth: 3
-    html_preview: false
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", knit_root_dir = rprojroot::find_rstudio_root_file()) })
-
+output: word_document
 ---
 
 ```{r Knitr Options, include = FALSE}
 knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
+
 ```
 
 
 ---
 
 # Goal of the script
-This script imports and merges all single CSV-files generated with the 'edge angle method'. The data derives from 3D models of artefacts from three different experiments: Initial experiment, arificial VS natural experiment, tool function experiment. The data always cotains the 3D models from before, after 50, 250, 1000 and 2000 strokes.
+This script imports and merges all single CSV-files generated with the 'edge angle method'. The data derives from 3D models of artefacts from three different experiments: Initial experiment, arificial VS natural experiment, tool function experiment. The data always contain the 3D models from before, after 50, 250, 1000 and 2000 strokes.
 
 The script will:
 
@@ -40,6 +27,7 @@ The script will:
 ```{r}
 dir_in <- "analysis/raw_data"
 dir_out <- "analysis/derived_data/"
+
 ```
 
 
@@ -56,6 +44,7 @@ library(tidyverse)
 library(R.utils)
 library(openxlsx)
 library(tools)
+
 ```
 
 
@@ -89,7 +78,12 @@ for (s in seq_along(data_final)) {
    data_final[[s]] <- read.csv(CSV_files[s]) %>% 
                       mutate(experiment = exp) %>% 
                       select(experiment, everything()) %>% 
-                      rename(Angle_number = angel_number, Distance_origin = dist.to.origin.on.curve..mm., Segment = segment.on.section..mm.,Three_point = angle.1..3.points...degree., Two_lines = angle.2..2.constructed.lines...degree., Best_fit = angle.3..2.BestFit.lines...degree.)
+                      rename(Angle_number = angel_number, Distance_origin =
+                               dist.to.origin.on.curve..mm., Segment =
+                               segment.on.section..mm.,Three_point =
+                               angle.1..3.points...degree., Two_lines =
+                               angle.2..2.constructed.lines...degree., Best_fit =
+                               angle.3..2.BestFit.lines...degree.)
 }
 
 # rbind all files 
@@ -105,7 +99,8 @@ minus_bind <- do.call(rbind, minus_split)
 sample_ID <- paste(minus_bind[,1], minus_bind[,2], sep="-")
 
 data_final3 <- data_final2 %>% 
-  mutate(ID = sample_ID, strokes = minus_bind[,3], edge = underscore_bind[,2], sec = underscore_bind[,4])
+  mutate(ID = sample_ID, strokes = minus_bind[,3], edge = underscore_bind[,2], 
+        sec = underscore_bind[,4])
 
 # extracts the raw material based on the ID
 data_final3[grep("FLT", data_final3[["ID"]]), "Raw.material"] <- "flint"
@@ -141,15 +136,20 @@ data_final3[grep("FLT4-11", data_final3[["ID"]]), "Contact.material"] <- "skin p
 data_final3[grep("FLT4-12", data_final3[["ID"]]), "Contact.material"] <- "skin pad"
 data_final3[grep("FLT4-13", data_final3[["ID"]]), "Contact.material"] <- "skin pad"
 
-data_final3[grep("initial_experiment", data_final3[["experiment"]]), "Contact.material"] <- "bone plate"
-data_final3[grep("tool_function-experiment_cutting", data_final3[["experiment"]]), "Contact.material"] <- "bone plate"
-data_final3[grep("tool_function-experiment_carving", data_final3[["experiment"]]), "Contact.material"] <- "bone plate"
+data_final3[grep("initial_experiment", data_final3[["experiment"]]), "Contact.material"] <-
+            "bone plate"
+data_final3[grep("tool_function-experiment_cutting", data_final3[["experiment"]]),
+            "Contact.material"] <- "bone plate"
+data_final3[grep("tool_function-experiment_carving", data_final3[["experiment"]]),
+            "Contact.material"] <- "bone plate"
 
 data_final3[["experiment"]] <- factor(data_final3[["experiment"]])
 
 # adds column about the task/movement 
-data_final3[grep("tool_function-experiment_cutting", data_final3[["experiment"]]), "Task"] <- "cutting"
-data_final3[grep("tool_function-experiment_carving", data_final3[["experiment"]]), "Task"] <- "carving"
+data_final3[grep("tool_function-experiment_cutting", data_final3[["experiment"]]), 
+            "Task"] <- "cutting"
+data_final3[grep("tool_function-experiment_carving", data_final3[["experiment"]]), 
+            "Task"] <- "carving"
 data_final3[grep("initial_experiment", data_final3[["experiment"]]), "Task"] <- "cutting"
 data_final3[grep("'aVSn'-experiment", data_final3[["experiment"]]), "Task"] <- "cutting"
 data_final3[grep("LYDIT5-14", data_final3[["ID"]]), "Task"] <- "scraping"
@@ -208,31 +208,21 @@ data_final3 <- data_final3[c(2, 1, 9:16, 3:8)]
 ## Format name of output file
 ```{r}
 file_out <- "EdgeAngle_experiment"
+
 ```
 
 
 ## Write to XLSX
 ```{r}
-write.xlsx(list(data = data_final3), file = paste0(dir_out, file_out, ".xlsx")) 
+write.xlsx(list(data = data_final3), file = paste0(dir_out, file_out, ".xlsx"))
+
 ```
 
 
 ## Save R object
 ```{r}
 saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
-```
 
-
-## Show files information
-```{r}
-files_out <- list.files(dir_out, full.names = TRUE)
-md5_out <- md5sum(files_out)
-info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, row.names = NULL)
-```
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
 ```
 
 
@@ -242,6 +232,7 @@ info_out
 
 ```{r}
 sessionInfo()
+
 ```
 
 RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
