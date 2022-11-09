@@ -2,7 +2,13 @@
 title: "Import - Edge angle analysis - experimental data"
 author: "Lisa Schunk"
 date: "`r Sys.time()`"
-output: word_document
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 ```{r Knitr Options, include = FALSE}
@@ -14,7 +20,7 @@ knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
 ---
 
 # Goal of the script
-This script imports and merges all single CSV-files generated with the 'edge angle method'. The data derives from 3D models of artefacts from three different experiments: Initial experiment, arificial VS natural experiment, tool function experiment. The data always contain the 3D models from before, after 50, 250, 1000 and 2000 strokes.
+This script imports and merges all single CSV-files generated with the 'edge angle method'. The data derives from 3D models of artefacts from three different experiments: Initial experiment, artificial VS natural experiment, tool function experiment. The data always contain the 3D models from before, after 50, 250, 1000 and 2000 strokes.
 
 The script will:
 
@@ -37,13 +43,10 @@ The knit directory for this script is the project directory.
 
 ---
 
-
 # Load packages
-```{r}
-library(tidyverse)
-library(R.utils)
-library(openxlsx)
-library(tools)
+```{r Libraries}
+pack_to_load <- c("tools", "openxlsx", "R.utils", "tidyverse")
+sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)
 
 ```
 
@@ -59,7 +62,6 @@ CSV_files <- list.files(dir_in, pattern = "\\.csv$", recursive = TRUE, full.name
 ```
 
 
-
 # Merge all files and format the data 
 ```{r}
 # Create a list 
@@ -70,7 +72,7 @@ names(data_final) <- basename(CSV_files)
 for (s in seq_along(data_final)) {
   
       
-    # Gets name of the experiment from path names 
+    # get name of the experiment from path names 
     exp <- dirname(dirname(dirname(CSV_files[s]))) %>%
           basename()
     
@@ -102,14 +104,14 @@ data_final3 <- data_final2 %>%
   mutate(ID = sample_ID, strokes = minus_bind[,3], edge = underscore_bind[,2], 
         sec = underscore_bind[,4])
 
-# extracts the raw material based on the ID
+# extract the raw material based on the ID
 data_final3[grep("FLT", data_final3[["ID"]]), "Raw.material"] <- "flint"
 data_final3[grep("LYDIT", data_final3[["ID"]]), "Raw.material"] <- "lydite"
 data_final3[["Raw.material"]] <- factor(data_final3[["Raw.material"]])
 
 data_final3[["Raw.material"]] <- factor(data_final3[["Raw.material"]])
 
-# adds the contact/worked material
+# add the contact/worked material
 data_final3[grep("LYDIT4-1", data_final3[["ID"]]), "Contact.material"] <- "pork skin"
 data_final3[grep("LYDIT4-4", data_final3[["ID"]]), "Contact.material"] <- "pork skin"
 data_final3[grep("LYDIT4-6", data_final3[["ID"]]), "Contact.material"] <- "pork skin"
@@ -145,7 +147,7 @@ data_final3[grep("tool_function-experiment_carving", data_final3[["experiment"]]
 
 data_final3[["experiment"]] <- factor(data_final3[["experiment"]])
 
-# adds column about the task/movement 
+# add column about the task/movement 
 data_final3[grep("tool_function-experiment_cutting", data_final3[["experiment"]]), 
             "Task"] <- "cutting"
 data_final3[grep("tool_function-experiment_carving", data_final3[["experiment"]]), 
@@ -156,7 +158,7 @@ data_final3[grep("LYDIT5-14", data_final3[["ID"]]), "Task"] <- "scraping"
 
 data_final3[["Task"]] <- factor(data_final3[["Task"]])
 
-# adds column about the edge angle 
+# add column about the edge angle 
 data_final3[grep("'aVSn'-experiment", data_final3[["experiment"]]), "Edge.angle"] <- "60°"
 
 data_final3[grep("FLT8-1", data_final3[["ID"]]), "Edge.angle"] <- "45°"
@@ -203,7 +205,6 @@ data_final3 <- data_final3[c(2, 1, 9:16, 3:8)]
 ```
 
 
-
 # Save data
 ## Format name of output file
 ```{r}
@@ -237,6 +238,12 @@ sessionInfo()
 
 RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
 
+
+# Cite R packages used
+```{r Citation}
+for (i in pack_to_load) print(citation(i), bibtex = FALSE)
+
+```
 
 ---
 
